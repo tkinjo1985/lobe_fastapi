@@ -21,6 +21,7 @@ model = ImageModel('sample_model')
 # get input shape for model from signature
 input_shape = model.get_input_shape('sample_model/signature.json')
 
+# create DataModel
 class ImageBase64(BaseModel):
     base64_str: str
 
