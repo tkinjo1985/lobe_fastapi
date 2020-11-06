@@ -36,25 +36,26 @@ resize_image('imagefile', 224, 224)
 image_bae64 = image2base64('sample_image/resize.dog.9994.jpg')
 
 # endpoint for predict from base64
-url_base64 = 'http://localhost:8000/predict_from_base64/'
+predict_url_base64 = 'http://localhost:8000/predict_from_base64/'
+
 # send predict request
-r = predict_from_base64(image_bae64, url_base64)
+r = predict_from_base64(image_bae64, predict_url_base64)
 ```
 
-if predict from image:
+if predict from images:
 ```
-def predict_image_label(filename, url):
+def predict_from_image(filename, url):
     files = [('file', open(filename, 'rb'))]
     response = requests.post(url, files=files)
     label = json.loads(response.text)['label']
 
     return label
 
-# endpoint for predict from base64
-url_base64 = 'http://localhost:8000/predict_from_image/'
+# endpoint for predict from image
+predict_url_image = 'http://localhost:8000/predict_from_image/'
 
 # send predict request(not need resize image.)
-r = predict_from_base64('sample_image/dog.9994.jpg', url_base64) 
+r = predict_from_image('sample_image/dog.9994.jpg', predict_url_image) 
 ```
 
 ## For use your original model
