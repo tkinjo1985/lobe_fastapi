@@ -7,27 +7,27 @@ import tensorflow as tf
 class ImageModel:
     def __init__(self, model_path):
         """
-        modelを読み込みます。
+        Load a model.
 
         paramter:
-        model_paht: modelの保存パス
+        model_paht: model path
         """
         try:
             self.model = tf.saved_model.load(model_path)
             self.infer = self.model.signatures['serving_default']
         except OSError as err:
-            print('modelが見つかりません。modelの保存先と名前を確認してください。')
+            print('model not found. check model name and path.')
             print(err)
 
     def get_input_shape(self, signature_path):
         """
-        signature(署名)からmodelへのinput_shapeを取得します。
+        Load input shape to model from signature.
 
         parameter:
-        signature: signatureファイル(signature.json)
+        signature: signature.json
 
         return:
-        input shape:　modelへの入力サイズ
+        input shape:　input shape to model.
         """
         if os.path.exists(signature_path):
             with open(signature_path, 'r') as f:
@@ -35,17 +35,17 @@ class ImageModel:
             inputs = signature.get('inputs')
             return inputs['Image']['shape'][1:]
         else:
-            print('signatureファイルが見つかりません。')
+            print('signature.json not found.')
 
     def predict(self, image):
         """
-        与えられた画像から正解ラベルを予測します。
+        Predict label from image.
 
         Parameter:
-        image: 予測したい画像(numpy.ndarray)
+        image: numpy.ndarray
 
         Return:
-        predict: 予測結果
+        predict: label
         """
         predict = self.infer(tf.constant(image))['Prediction'][0]
         return predict.numpy().decode()
