@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y \
     libopencv-dev \
     opencv-data
 
-# pipをアップグレード
 RUN pip install --upgrade pip
 
 COPY requirements.txt /work
