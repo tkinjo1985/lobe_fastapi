@@ -17,29 +17,23 @@ predict from  base64 converted images.
 ```
 import json
 import requests
-from image_utils import image2base64, resize_image
+from image_utils import preprocess_image
 
 def predict_from_base64(image_base64, url):
-    image_b64 = image_base64.decode('utf8')
-    data = {'base64_str': image_b64}
+    data = {'base64_str': image_base64}
     response = requests.post(url, data=json.dumps(data))
     label = json.loads(response.text)['label']
 
     return label
 
-# if image size not (224, 224, 3) need resize.
-# This function is save the risize image.
-# ex… dog.9994.jpg -> resized.9994.jpg
-resize_image('imagefile', 224, 224)
-
-# convert image to base64.
-image_bae64 = image2base64('sample_image/resize.dog.9994.jpg')
+# resize image and convert base64: preprocess_image('filename', width, height)
+image_bae64 = preprocess_image('sample_image/dog.9994.jpg', 224, 224)
 
 # endpoint for predict from base64
 predict_url_base64 = 'http://localhost:8000/predict_from_base64/'
 
 # send predict request
-r = predict_from_base64(image_bae64, predict_url_base64)
+label = predict_from_base64(image_bae64, predict_url_base64)
 ```
 
 if predict from images:
@@ -55,7 +49,7 @@ def predict_from_image(filename, url):
 predict_url_image = 'http://localhost:8000/predict_from_image/'
 
 # send predict request(not need resize image.)
-r = predict_from_image('sample_image/dog.9994.jpg', predict_url_image) 
+label = predict_from_image('sample_image/dog.9994.jpg', predict_url_image) 
 ```
 
 ## For use your original model

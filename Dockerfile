@@ -1,13 +1,10 @@
-# pythonの最新版をベースに使用
-FROM tiangolo/uvicorn-gunicorn-fastapi
+FROM python:3.8
 
-# 作業ディレクトリ作成
 WORKDIR /work
 
 RUN apt-get update && apt-get install -y \
     sudo \
-    python3-dev \
-    python3-pip \
+    git \
     libopencv-dev \
     opencv-data
 

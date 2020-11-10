@@ -3,3 +3,5 @@ numpy==1.18.5
 Pillow
 opencv-python
 python-multipart
+fastapi
+uvicorn

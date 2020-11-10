@@ -1,3 +1,5 @@
+import os
+from base64 import b64encode
 import base64
 import shutil
 from pathlib import Path
@@ -18,12 +20,13 @@ app = FastAPI()
 # model = ImageModel('model folder path')
 model = ImageModel('sample_model')
 
-# get input shape for model from signature
-input_shape = model.get_input_shape('sample_model/signature.json')
 
-# create DataModel
 class ImageBase64(BaseModel):
     base64_str: str
+
+
+# get input shape for model from signature
+input_shape = model.get_input_shape('sample_model/signature.json')
 
 
 @app.post("/predict_from_image/")

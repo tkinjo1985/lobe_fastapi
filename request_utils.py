@@ -1,6 +1,6 @@
+
 import json
 import requests
-# from image_utils import image2base64, resize_image
 
 
 def predict_from_image(filename, url):
@@ -12,8 +12,7 @@ def predict_from_image(filename, url):
 
 
 def predict_from_base64(image_base64, url):
-    image_b64 = image_base64.decode('utf8')
-    data = {'base64_str': image_b64}
+    data = {'base64_str': image_base64}
     response = requests.post(url, data=json.dumps(data))
     label = json.loads(response.text)['label']
 
