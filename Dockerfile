@@ -1,6 +1,8 @@
-FROM python:3.8
+FROM tensorflow/tensorflow:latest
 
 WORKDIR /work
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
     sudo \
@@ -12,5 +14,3 @@ RUN pip install --upgrade pip
 
 COPY requirements.txt /work
 RUN pip install -r requirements.txt
-
-CMD [ "/bin/bash" ]

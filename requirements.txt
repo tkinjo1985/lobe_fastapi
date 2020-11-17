@@ -1,7 +1,5 @@
-tensorflow-cpu
-numpy==1.18.5
-Pillow
 opencv-python
+pillow
 python-multipart
 fastapi
 uvicorn

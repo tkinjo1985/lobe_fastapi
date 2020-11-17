@@ -17,7 +17,7 @@ predict from  base64 converted images.
 ```
 import json
 import requests
-from image_utils import preprocess_image
+from image_utils import image2base64
 
 def predict_from_base64(image_base64, url):
     data = {'base64_str': image_base64}
@@ -26,8 +26,8 @@ def predict_from_base64(image_base64, url):
 
     return label
 
-# resize image and convert base64: preprocess_image('filename', width, height)
-image_bae64 = preprocess_image('sample_image/dog.9994.jpg', 224, 224)
+# Convert the image to base64
+image_bae64 = image2base64('sample_image/dog.9994.jpg')
 
 # endpoint for predict from base64
 predict_url_base64 = 'http://localhost:8000/predict_from_base64/'
@@ -48,7 +48,7 @@ def predict_from_image(filename, url):
 # endpoint for predict from image
 predict_url_image = 'http://localhost:8000/predict_from_image/'
 
-# send predict request(not need resize image.)
+# send predict request
 label = predict_from_image('sample_image/dog.9994.jpg', predict_url_image) 
 ```
 
