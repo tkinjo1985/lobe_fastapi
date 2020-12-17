@@ -47,5 +47,5 @@ class ImageModel:
         Return:
         predict: label
         """
-        predict = self.infer(tf.constant(image))['Prediction'][0]
+        predict = self.infer(image)['Prediction'][0]
         return predict.numpy().decode()

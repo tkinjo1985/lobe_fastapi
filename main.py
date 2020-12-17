@@ -5,8 +5,8 @@ from tempfile import NamedTemporaryFile
 
 import cv2
 import numpy as np
+import tensorflow as tf
 from fastapi import FastAPI, File, UploadFile
-from PIL import Image
 from pydantic import BaseModel
 
 from model import ImageModel
@@ -27,25 +27,36 @@ class ImageBase64(BaseModel):
 input_shape = model.get_input_shape('sample_model/signature.json')
 
 
+@app.on_event("startup")
+def startup_event():
+    print('start')
+    # create model instance
+    # model = ImageModel('model folder path')
+    model = ImageModel('sample_model')
+
+    # get input shape for model from signature
+    input_shape = model.get_input_shape('sample_model/signature.json')
+
+
 @app.post("/predict_from_image/")
-def predict(file: UploadFile = File(...)):
+async def predict(file: UploadFile = File(...)):
     filepath = save_upload_file_tmp(file)
-    image = Image.open(filepath)
-    image = image.resize((input_shape[0], input_shape[1]))
-    image = np.asarray(image, dtype=np.float32) / 255.0
-    x = np.expand_dims(image, axis=0)
-    label = model.predict(x)
+    image = tf.keras.preprocessing.image.load_img(
+        filepath, color_mode='rgb', target_size=(224, 224))
+    image = tf.keras.preprocessing.image.img_to_array(image) / 255.0
+    image = tf.expand_dims(image, axis=0)
+    label = model.predict(image)
     return {'label': label}
 
 
 @app.post("/predict_from_base64/")
-def predict_from_base64(image: ImageBase64):
+async def predict_from_base64(image: ImageBase64):
     image_base64 = image.base64_str
     image_dec = b64decode(image_base64)
     image_np = np.frombuffer(image_dec, dtype='uint8')
     decimg = cv2.imdecode(image_np, 1).astype(np.float32) / 225.0
-    x = np.expand_dims(decimg, axis=0)
-    label = model.predict(x)
+    image = tf.expand_dims(decimg, axis=0)
+    label = model.predict(image)
     return {'label': label}
 
 
