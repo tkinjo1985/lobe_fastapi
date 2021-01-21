@@ -145,4 +145,4 @@ cython_debug/
 .DS_Store
 
 /sample_image
-sample_send_request.py
+sample_send.py
