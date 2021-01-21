@@ -143,3 +143,6 @@ cython_debug/
 .vscode
 
 .DS_Store
+
+/sample_image
+sample_send_request.py
